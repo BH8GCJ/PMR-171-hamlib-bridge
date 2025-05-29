@@ -72,7 +72,7 @@
 
 ## 📫 联系/反馈
 
-如有问题、建议或功能请求，请通过 [Issues](https://github.com/BH8GCJ/PMR171-hamlib-bridge/issues) 提交。
+如有问题、建议或功能请求，请通过 [Issues](https://github.com/BH8GCJ/PMR-171-hamlib-bridge/issues) 提交。
 
 ---
 
