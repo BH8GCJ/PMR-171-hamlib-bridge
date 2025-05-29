@@ -1,3 +1,7 @@
+# 本程序遵循 GNU 通用公共许可证 v3.0 (GPLv3)
+# 详情请参阅 LICENSE 文件或访问 https://www.gnu.org/licenses/gpl-3.0.html
+# 版权所有 (C) <2025> <BH8GCJ>
+
 import socket
 import serial
 import struct
