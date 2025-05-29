@@ -76,7 +76,6 @@
 
 ---
 
-## 📜 License
+## 📜 许可证
 
-MIT License
-
+本项目遵循 **GNU 通用公共许可证 v3.0 (GPLv3)** - 详情请查看 [LICENSE](LICENSE) 文件。
