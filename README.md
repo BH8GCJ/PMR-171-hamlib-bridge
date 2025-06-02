@@ -22,7 +22,7 @@
 
 ## 💻 开发环境 / Running from source
 
-- **Python 版本要求：** 3.10 及以上（代码使用 `match` 语法）
+- **Python 版本要求：** 3.10 及以上
 - **安装依赖：** `pip install -r requirements.txt`
 - **运行方式：** `python main.py`，然后按提示选择串口
 
