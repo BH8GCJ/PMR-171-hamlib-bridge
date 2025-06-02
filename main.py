@@ -157,11 +157,12 @@ def rigctl_server(bridge: PMR171Bridge, host='127.0.0.1', port=4532):
                 client_socket.send(b'RPRT -1\n')
 
         with client_socket:
-            while True:
+            stream = client_socket.makefile('r', encoding='utf-8', newline='\n')
+            for line in stream:
                 try:
-                    cmd = client_socket.recv(128).decode().strip()
+                    cmd = line.strip()
                     if not cmd:
-                        break
+                        continue
                     if cmd == 'q':
                         break
                     handle_cmd(cmd)
