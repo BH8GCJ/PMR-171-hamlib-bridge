@@ -126,35 +126,39 @@ def rigctl_server(bridge: PMR171Bridge, host='127.0.0.1', port=4532):
 
     def handle(client_socket):
         def handle_cmd(cmd):
-            command_map = {
-                'v': lambda: client_socket.send(b'PMR-171\n'),
-                'V': lambda: client_socket.send(b'1.0.0\n'),
-                'f': lambda: client_socket.send(f"{bridge.get_freq()}\n".encode()),
-                'm': lambda: client_socket.send(f"{bridge.get_mode()}\n".encode()),
-                't': lambda: client_socket.send(b'1\n' if bridge.ptt_status else b'0\n'),
-            }
-            if cmd in command_map:
-                command_map[cmd]()
-            elif cmd.startswith('F'):
-                try:
-                    freq = int(cmd[1:].strip())
-                    bridge.set_freq(freq)
+            op = cmd[:1]
+            rest = cmd[1:].strip()
+
+            match op:
+                case 'v':
+                    client_socket.send(b'PMR-171\n')
+                case 'V':
+                    client_socket.send(b'1.0.0\n')
+                case 'f':
+                    client_socket.send(f"{bridge.get_freq()}\n".encode())
+                case 'm':
+                    client_socket.send(f"{bridge.get_mode()}\n".encode())
+                case 't':
+                    client_socket.send(b'1\n' if bridge.ptt_status else b'0\n')
+                case 'F':
+                    try:
+                        freq = int(rest)
+                        bridge.set_freq(freq)
+                        client_socket.send(b'RPRT 0\n')
+                    except Exception:
+                        client_socket.send(b'RPRT -1\n')
+                case 'M':
+                    try:
+                        _, mode, width = cmd.split()
+                        bridge.set_mode(mode)
+                        client_socket.send(b'RPRT 0\n')
+                    except Exception:
+                        client_socket.send(b'RPRT -1\n')
+                case 'T':
+                    bridge.set_ptt(rest == '1')
                     client_socket.send(b'RPRT 0\n')
-                except:
+                case _:
                     client_socket.send(b'RPRT -1\n')
-            elif cmd.startswith('M'):
-                try:
-                    _, mode, width = cmd.split()
-                    bridge.set_mode(mode)
-                    client_socket.send(b'RPRT 0\n')
-                except:
-                    client_socket.send(b'RPRT -1\n')
-            elif cmd.startswith('T'):
-                state = cmd[1:].strip()
-                bridge.set_ptt(state == '1')
-                client_socket.send(b'RPRT 0\n')
-            else:
-                client_socket.send(b'RPRT -1\n')
 
         with client_socket:
             stream = client_socket.makefile('r', encoding='utf-8', newline='\n')
